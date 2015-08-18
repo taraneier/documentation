@@ -32,6 +32,7 @@ Add labels to issues by clicking the gear in the sidebar on the right. Labels ar
 1. Search [open issues](https://github.com/pantheon-systems/documentation/issues) to make sure your isn't duplicated.
 2. Locally, cd to the `documentation` repository and use `git checkout -b <new-branch-name>` to switch to a new branch.
 3. Edit locally, commit changes, and push to your fork.
+4. Search the repo for links to the document you are editing, and edit those docs if your changes affect the promises made in the linking document.
 
 ## Keep your Local Updated with Master
 
