@@ -14,9 +14,7 @@ We do not prevent you from installing and using these plugins/modules; however, 
 **Solution**: Pantheon recommends Redis as a caching backend, which has better performance.
 <hr>
 ### Adaptive Image Styles
-**Issue**:
-
-**Solution**:
+**Issue**: This module requires edits to the `nginx.conf` which is not currently supported on the platform. See [Known Limitations](/docs/articles/sites/known-limitations/#nginx.conf).
 <hr>
 ### Apache Solr Search
 **Issue**: If Acquia Solr modules are present in the site codebase (even if disabled) and Pantheon Apache Solr is enabled, the site will be unable to connect to Solr server.
@@ -26,23 +24,23 @@ We do not prevent you from installing and using these plugins/modules; however, 
 ### Background Process  
 **Issue**: The module allows for Drupal to perform "parallel" (asynchronous non-blocking mode) requests. However, there are a number of limitations working in a distributed environment and function correctly on the platform.
 
-**Solution**:
 <hr>
 ### Backup & Migrate
-**Issue**:
+**Issue**: The Backup and Migrate module can create large archives and cause issues with the workflow tools on the dashboard. See [Backup Creation](/docs/articles/sites/backups/backup-creation/#drupal-note-why-is-backup-&-migrate-not-recommended-on-pantheon?).
 
-**Solution**:
+**Solution**: You can use the automated backups that are available on the dashboard for each environment.
 <hr>
 ### Boost
-**Issue**:
+**Issue**: We do not recommend the boost module on the platform as Varnish is running. Running Boost in addition to Varnish can cause caching issues.
 
-**Solution**:
 <hr>
 
 ### Cache Expiration
-**Issue**:
+**Issue**: Unfortunately, there is no way to selectively purge the Varnish cache.
 
-**Solution**:
+**Solution**: You can set a `NO_CACHE` cookie or set `Cache-Control: no-cache,max-age=0` header to bypass Varnish.
+
+
 <hr>
 ### Global Redirect  
  **Issue**: Too many redirects error when site is in maintenance mode.  
@@ -52,22 +50,19 @@ We do not prevent you from installing and using these plugins/modules; however, 
 ### HTTPRL  
 **Issue**: This module can severely impact performance. This may be the result of module code or its configuration on the platform that results in the spikes.
 
-**Solution**:
 <hr>
 ### IMCE 6.x
-**Issue**:
+**Issue**: Operations on directories containing an inordinate amount of files will likely hit the load balancer timeout threshold (30 seconds).
 
-**Solution**:
+**Solution**: The alternative for now is to break up the files into smaller groups.
+
+
 <hr>
 ### Mobile Tools
-**Issue**:
-
-**Solution**:
+**Issue**: Conflicts with Varnish. See [https://www.drupal.org/node/1976162#comment-7411366](https://www.drupal.org/node/1976162#comment-7411366).
 <hr>
 ### Mollom  
-**Issue**: Cookies break Varnish.
-
-**Solution**:
+**Issue**: Conflicts with Varnish by returning the I.P. address of the proxy cache servers.
 <hr>
 ### Pathologic  
  **Issue**: The path of the base URL is changed and cached by the module itself.  
@@ -77,6 +72,12 @@ We do not prevent you from installing and using these plugins/modules; however, 
 ### Registry Rebuild  
 This is built into the Pantheon platform.
 
+To rebuild the registry of a site, create a backup from your Dashboard, then run:
+
+```
+drush @pantheon.SITENAME.ENV rr
+```
+<hr>
 ### Schema  
 **Issue**: The module doesn't work with the MySQL TIMESTAMP column type in our heartbeat table, which is part of how we maintain status around whether or not a site and its database is active. This is a [known bug](https://drupal.org/node/468644) in the schema module.
 
@@ -86,11 +87,11 @@ This is built into the Pantheon platform.
    ```
 <hr>
 ### Varnish
-**Issue**:
+**Issue**: Conflicts with the existing platform configuration.
 
-**Solution**:
+**Solution**: Update Drupal performance settings to set the TTL and have Varnish serve requests. See [Drupal 7 Performance and Varnish Caching Settings](/docs/articles/drupal/drupal-7-performance-and-caching-settings/)
 <hr>
-### Using the `/tmp` Directory
+## Using the `/tmp` Directory
 **Issue**:
 The modules listed below are not supported due to the use of the `/tmp` directory. With multiple application servers, as exists on Live environments, Drupal assumes the `/tmp` directory will be on the same application container. However, as we run a distributed application container matrix, the `/tmp` directory is not shared. For more details on Pantheon's distributed infrastructure, see [All About Application Containers](/docs/articles/sites/all-about-application-containers).
 
@@ -115,25 +116,13 @@ Using sites/default/files/tmp as a work around for these issues will produce unp
 
 ##WordPress Plugins
 
-### WP Super Cache
-**Issue**:
+### Caching Plugins (e.g. Batcache, W3 Total Cache, or WP Super Cache)
+**Issue**: Conflicts with Varnish.
 
-**Solution**:
-<hr>
-### W3 Total Cache
-**Issue**:
-
-**Solution**:
-<hr>
-### batcache
-**Issue**:
-
-**Solution**:
+**Solution**: Issue standard `Cache-Control: no-cache,max-age=0` HTTP headers to bypass Varnish.
 <hr>
 ### Timthumb
-**Issue**:
-
-**Solution**:
+**Issue**: TimThumb is no longer supported or maintained. See [https://code.google.com/p/timthumb/](https://code.google.com/p/timthumb/).
 <hr>
 
 ## Dynamic Outbound IPs
