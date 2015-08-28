@@ -2,6 +2,7 @@
 use: [guides]
 layout: default
 title: Guides
+contentlanding: true
 ---
 <div class="container article">
   <div class="col-md-9">

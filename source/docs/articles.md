@@ -2,6 +2,7 @@
 use: [articles]
 layout: default
 title: Articles
+contentlanding: true
 ---
 
 
